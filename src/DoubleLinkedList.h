@@ -21,6 +21,9 @@ class DoubleLinkedList
 public:
 	DoubleLinkedList();
 	virtual ~DoubleLinkedList();
+
+	int Size();
+	void Insert(int input);
 };
 
 #endif /* DOUBLELINKEDLIST_H_ */
