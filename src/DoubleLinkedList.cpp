@@ -29,25 +29,38 @@ public:
 	{
 		firstNode = NULL;
 		lastNode = NULL;
+		listSize = 0;
 	}
 
-	~ListImpl();
-
-	int Size
+	~ListImpl()
+	{
+		// TODO
+	}
 
 	/*
-	 * insert()
-	 *
-	 * inserts a new node populated with input data in the
-	 * correct location in the list. Maintains ordering of
-	 * list.
-	 */
+	* int Size()
+	* 
+	* Return the number of nodes in the list.
+	*/
+	int Size()
+	{
+		return listSize;
+	}
+
+	/*
+	* insert()
+	*
+	* Inserts a new node populated with input data in the
+	* correct location in the list. Maintains ordering of
+	* list.
+	*/
 	void Insert(int input)
 	{
-		if(!firstNode)
+		if (!firstNode)
 		{
 			firstNode = new Node(input);
 			lastNode = firstNode;
+			listSize++;
 		}
 		else
 		{
@@ -63,5 +76,16 @@ DoubleLinkedList::DoubleLinkedList()
 DoubleLinkedList::~DoubleLinkedList()
 {
 	// Do nothing. Let the shared_ptr handle deallocation.
+}
+
+
+int DoubleLinkedList::Size()
+{
+	return pImpl->Size();
+}
+
+void DoubleLinkedList::Insert(int input)
+{
+	pImpl->Insert(input);
 }
 
