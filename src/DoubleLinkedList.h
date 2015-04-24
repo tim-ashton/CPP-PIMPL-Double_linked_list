@@ -24,6 +24,8 @@ public:
 
 	int Size();
 	void Insert(int input);
+	int Front();
+	int Back();
 };
 
 #endif /* DOUBLELINKEDLIST_H_ */

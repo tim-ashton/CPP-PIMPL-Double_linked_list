@@ -39,7 +39,7 @@ public:
 
 	/*
 	* int Size()
-	* 
+	*
 	* Return the number of nodes in the list.
 	*/
 	int Size()
@@ -55,27 +55,44 @@ public:
 	void Insert(int input)
 	{
 		std::shared_ptr<Node> newNode(new Node(input));
+		lastNode = newNode;
 
-		if (!firstNode.get()) //insert into an empty list
+		if (listSize == 0) //insert into an empty list
 		{
 			firstNode = newNode;
-			lastNode = newNode;
+			listSize++;
+		}
+		else if(listSize == 1)
+		{
+			firstNode->next = newNode;
+			newNode->previous = firstNode;
 			listSize++;
 		}
 		else
 		{
-			Insert(newNode, firstNode);
+			firstNode = Insert(newNode, firstNode->next);
 		}
 	}
 
+	int Back()
+	{
+		return lastNode->data;
+	}
+
+	int Front()
+	{
+		return firstNode->data;
+	}
+
 private:
+
 	/*
 	* Insert()
 	*
-	* This is the recursive insert on the list.
-	* Note: There is absolutely no need for recuresion. In fact this would be more 
-	* econimic to just us a while loop. 
-	* 
+	* This is a recursive insert on the list.
+	* Note: There is absolutely no need for recuresion. In fact this would be more
+	* memory economic to just use a loop.
+	*
 	* I just wanted to use recursion for fun...
 	*/
 	std::shared_ptr<Node> Insert(std::shared_ptr<Node> newNode, std::shared_ptr<Node> head)
@@ -90,7 +107,7 @@ private:
 		{
 			head = Insert(newNode, head->next);
 		}
-		return head;
+		return head->previous;
 	}
 };
 
@@ -113,3 +130,14 @@ void DoubleLinkedList::Insert(int input)
 {
 	pImpl->Insert(input);
 }
+
+int DoubleLinkedList::Back()
+{
+	return pImpl->Back();
+}
+
+int DoubleLinkedList::Front()
+{
+	return pImpl->Front();
+}
+

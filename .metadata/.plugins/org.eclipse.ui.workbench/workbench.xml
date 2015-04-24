@@ -37,7 +37,7 @@
 </view>
 <view id="org.eclipse.ui.internal.introview" partName="Welcome">
 <viewState>
-<presentation currentPage="root" restore="true"/>
+<presentation currentPage="overview" restore="true"/>
 <standbyPart/>
 </viewState>
 </view>
@@ -69,6 +69,7 @@
 <alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
 <alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
 <alwaysOnActionSet id="org.eclipse.ui.NavigateActionSet"/>
+<alwaysOnActionSet id="org.eclipse.rse.core.search.searchActionSet"/>
 <show_view_action id="org.eclipse.ui.navigator.ProjectExplorer"/>
 <show_view_action id="org.eclipse.ui.views.BookmarkView"/>
 <show_view_action id="org.eclipse.ui.views.ContentOutline"/>
