@@ -50,10 +50,7 @@ public:
 	/*
 	* Insert()
 	*
-	* Inserts a new node populated with input data in the
-	* correct location in the list. Maintains ordering of list.
-	* If an attempt to insert a value that already resides in
-	* the list insert will insert in the front of existing node(s).
+	* Inserts a new node populated with input data in the list.
 	*/
 	void Insert(int input)
 	{
@@ -81,17 +78,19 @@ private:
 	* 
 	* I just wanted to use recursion for fun...
 	*/
-	void Insert(std::shared_ptr<Node> newNode, std::shared_ptr<Node> next)
+	std::shared_ptr<Node> Insert(std::shared_ptr<Node> newNode, std::shared_ptr<Node> head)
 	{
-		if (newNode->data < next->data)
+		if (!head->next)
 		{
-			Insert(newNode, next->next);
+			head->next = newNode;
+			newNode->previous = head;
+			listSize++;
 		}
 		else
 		{
-			newNode->next = next;
-			newNode->previous = next->previous;
+			head = Insert(newNode, head->next);
 		}
+		return head;
 	}
 };
 
@@ -114,4 +113,3 @@ void DoubleLinkedList::Insert(int input)
 {
 	pImpl->Insert(input);
 }
-
