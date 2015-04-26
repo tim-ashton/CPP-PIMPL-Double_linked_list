@@ -24,6 +24,7 @@ public:
 
 	int Size();
 	void Insert(int input);
+	void Remove(int value);
 	int Front();
 	int Back();
 };

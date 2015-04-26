@@ -74,11 +74,45 @@ public:
 		}
 	}
 
+	/*
+	 * Remove
+	 *
+	 * Removes the node(s) where value matches node data.
+	 */
+	void Remove(int value)
+	{
+		if(!firstNode)
+		{
+			return;
+		}
+		else if(!firstNode->next)
+		{
+			if(firstNode->data == value)
+			{
+				firstNode.reset();
+				listSize--;
+			}
+			else
+			{
+				return;
+			}
+		}
+
+	}
+
+	/*
+	 * Back
+	 *
+	 * Return value of data in the last node in the list.
+	 */
 	int Back()
 	{
 		return lastNode->data;
 	}
 
+	/*
+	 * Return value of data in the first node in the list.
+	 */
 	int Front()
 	{
 		return firstNode->data;
@@ -129,6 +163,11 @@ int DoubleLinkedList::Size()
 void DoubleLinkedList::Insert(int input)
 {
 	pImpl->Insert(input);
+}
+
+void DoubleLinkedList::Remove(int value)
+{
+	pImpl->Remove(value);
 }
 
 int DoubleLinkedList::Back()

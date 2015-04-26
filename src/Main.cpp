@@ -15,10 +15,12 @@ int main() {
 	DoubleLinkedList d;
 
 	d.Insert(5);
-	d.Insert(4);
-	d.Insert(3);
-	d.Insert(7);
-	d.Insert(-1);
+//	d.Insert(4);
+//	d.Insert(3);
+//	d.Insert(7);
+//	d.Insert(-1);
+
+	d.Remove(5);
 
 	int x = d.Size();
 
