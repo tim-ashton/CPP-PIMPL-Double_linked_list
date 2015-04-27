@@ -18,7 +18,7 @@ class DoubleLinkedList::ListImpl
 		Node(int input)
 			:data(input)
 			, next(NULL)
-			,previous(NULL)
+			, previous(NULL)
 		{}
 	};
 
@@ -29,8 +29,6 @@ class DoubleLinkedList::ListImpl
 public:
 	ListImpl()
 	{
-		firstNode = NULL;
-		lastNode = NULL;
 		listSize = 0;
 	}
 
@@ -62,7 +60,7 @@ public:
 			firstNode = newNode;
 			listSize++;
 		}
-		else if(listSize == 1)
+		else if (listSize == 1)
 		{
 			firstNode->next = newNode;
 			newNode->previous = firstNode;
@@ -75,21 +73,22 @@ public:
 	}
 
 	/*
-	 * Remove
-	 *
-	 * Removes the node(s) where value matches node data.
-	 */
+	* Remove
+	*
+	* Removes the node(s) where value matches node data.
+	*/
 	void Remove(int value)
 	{
-		if(!firstNode)
+		if (!firstNode)
 		{
 			return;
 		}
-		else if(!firstNode->next)
+		else if (!firstNode->next)
 		{
-			if(firstNode->data == value)
+			if (firstNode->data == value)
 			{
 				firstNode.reset();
+				lastNode.reset();
 				listSize--;
 			}
 			else
@@ -101,18 +100,28 @@ public:
 	}
 
 	/*
-	 * Back
-	 *
-	 * Return value of data in the last node in the list.
-	 */
+	*Empty
+	* 
+	* Return true if the container size is 0, false otherwise.
+	*/
+	bool Empty()
+	{
+		return (listSize == 0);
+	}
+
+	/*
+	* Back
+	*
+	* Return value of data in the last node in the list.
+	*/
 	int Back()
 	{
 		return lastNode->data;
 	}
 
 	/*
-	 * Return value of data in the first node in the list.
-	 */
+	* Return value of data in the first node in the list.
+	*/
 	int Front()
 	{
 		return firstNode->data;
@@ -123,11 +132,7 @@ private:
 	/*
 	* Insert()
 	*
-	* This is a recursive insert on the list.
-	* Note: There is absolutely no need for recuresion. In fact this would be more
-	* memory economic to just use a loop.
-	*
-	* I just wanted to use recursion for fun...
+	* Recursive insert on the list.
 	*/
 	std::shared_ptr<Node> Insert(std::shared_ptr<Node> newNode, std::shared_ptr<Node> head)
 	{
@@ -170,6 +175,11 @@ void DoubleLinkedList::Remove(int value)
 	pImpl->Remove(value);
 }
 
+bool DoubleLinkedList::Empty()
+{
+	return pImpl->Empty();
+}
+
 int DoubleLinkedList::Back()
 {
 	return pImpl->Back();
@@ -179,4 +189,5 @@ int DoubleLinkedList::Front()
 {
 	return pImpl->Front();
 }
+
 
