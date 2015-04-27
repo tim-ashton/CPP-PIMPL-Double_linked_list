@@ -24,16 +24,6 @@ class DoubleLinkedList::ListImpl
 		{}
 	};
 
-
-	template <typename T> class ListIterator
-	: std::iterator< std::bidirectional_iterator_tag, T >
-	{
-		// iterator class definition goes here
-	};
-
-	typedef ListIterator<Node*> iterator_type;
-	//typedef MyIterator<const int*> const_iterator_type
-
 	std::shared_ptr<Node> firstNode;
 	std::shared_ptr<Node> lastNode;
 	int listSize;
