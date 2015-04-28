@@ -20,6 +20,11 @@ int main() {
 	d.Insert(7);
 	d.Insert(-1);
 
+	for(DoubleLinkedList::iterator i = d.begin(); i != d.end(); i++)
+    {
+        std::cout << *i << " ";
+    }
+
 	d.Remove(3);
 	d.Remove(-1);
 

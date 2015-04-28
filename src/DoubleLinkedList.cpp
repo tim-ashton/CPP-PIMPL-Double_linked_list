@@ -7,6 +7,10 @@
  *      Author: Tim Ashton
  */
 
+#include <cstddef>
+#include <type_traits>
+
+
 #include "DoubleLinkedList.h"
 
 class DoubleLinkedList::ListImpl
@@ -29,6 +33,99 @@ class DoubleLinkedList::ListImpl
 	int listSize;
 
 public:
+
+	class ListIterator
+	: public std::iterator<std::forward_iterator_tag,
+	  Node,
+	  std::ptrdiff_t,
+	  Node*,
+	  Node&>
+	{
+	private:
+		Node *current;
+	public:
+
+		// Default constructor (gives end)
+		ListIterator()
+		:current(nullptr)
+		{}
+
+		// Copy Constructor
+		explicit ForwardIterator(Node* n)
+		: current(n)
+		{
+		}
+
+		// Swap
+		void swap(ListIterator& other) noexcept
+				{
+			std::swap(current, other.current);
+				}
+
+		//TODO
+		// Assignment operator
+
+		// Dereference (Read/Write)
+		int& operator*()
+		{
+			return current->data;
+		}
+
+		// Dereference const
+		const int& operator*() const
+		{
+			return current->data;
+		}
+
+		// Pre-increment
+		ListIterator& operator++()
+						{
+			if ( current )
+			{
+				current = current->next.get();
+			}
+			return *this;
+						}
+
+		// Post-increment
+		ListIterator operator++(int)
+						{
+			ListIterator temp = (*this);
+			current = current->next.get();
+			return temp;
+						}
+
+		//TODO
+		// Postincrement and de-reference
+		//		int& operator++()
+		//		{
+		//			ListIterator temp = (*this);
+		//			current = current->next.get();
+		//			return temp.current->data;
+		//		}
+
+		//TODO
+		// Postincrement and assignment
+
+		bool operator==(const ListIterator& iter) const
+						{
+			return current == iter.current;
+						}
+
+		bool operator!=(const ListIterator& iter) const
+						{
+			return current != iter.current;
+						}
+
+
+		//		Member accesses (-> when de-referencing returns an object with members).
+
+
+	};
+
+	typedef ListIterator< int, Node > iterator;
+	//typedef ListIterator< int const, Node > const > const_iterator;
+
 	ListImpl()
 	{
 		listSize = 0;
@@ -105,6 +202,14 @@ public:
 	}
 
 	/*
+	 * Begin
+	 */
+	ListIterator Begin()
+	{
+
+	}
+
+	/*
 	 *Empty
 	 *
 	 * Return true if the container size is 0, false otherwise.
@@ -132,7 +237,7 @@ public:
 		return firstNode->data;
 	}
 
-private:
+	private:
 
 	/*
 	 * Insert()
@@ -160,7 +265,7 @@ private:
 	 * Recursive helper function to remove a node in the list.
 	 */
 	std::shared_ptr<Node> Remove(int value, std::shared_ptr<Node> head)
-					{
+																			{
 		if(head->data == value) //remove head
 		{
 			head->previous->next = head->next;
@@ -181,7 +286,7 @@ private:
 			Remove(value, head->next);
 		}
 		return head->previous;
-					}
+																			}
 };
 
 DoubleLinkedList::DoubleLinkedList()
