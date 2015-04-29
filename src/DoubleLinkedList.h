@@ -28,7 +28,12 @@ public:
 	bool Empty();
 	int Front();
 	int Back();
-	void PopFront();
-	void PopBack();
+	int GetCurrentVal();
+	void SetCurrentVal(int value);
+	void CurrentToFront();
+	void CurrentToBack();
+	void ClearList();
+	bool operator ++();
+	bool operator --();
 };
 #endif /* DOUBLELINKEDLIST_H_ */

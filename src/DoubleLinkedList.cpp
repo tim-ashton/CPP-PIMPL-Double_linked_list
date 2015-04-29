@@ -20,78 +20,91 @@ class DoubleLinkedList::ListImpl
 		std::shared_ptr<Node> previous;
 
 		Node(int input)
-			:data(input)
-			, next(NULL)
-			, previous(NULL)
+		:data(input)
+		, next(NULL)
+		, previous(NULL)
 		{}
 	};
 
-	std::shared_ptr<Node> firstNode;
-	std::shared_ptr<Node> lastNode;
+	std::shared_ptr<Node> first;
+	std::shared_ptr<Node> last;
+	std::shared_ptr<Node> current;
 	int listSize;
 
 public:
 	ListImpl()
-		:listSize(0)
+	:listSize(0)
 	{}
+
+	ListImpl(const ListImpl &rhs)
+	:listSize(0)
+	{
+		std::shared_ptr<Node> temp = rhs.first;
+		while(temp)
+		{
+			this->Insert(temp->data);
+			temp = temp->next;
+		}
+	}
 
 	~ListImpl()
 	{} // Let the shared_ptr handle delete.
 
 	/*
-	* int Size()
-	*
-	* Return the number of nodes in the list.
-	*/
+	 * int Size()
+	 *
+	 * Return the number of nodes in the list.
+	 */
 	int Size()
 	{
 		return listSize;
 	}
 
 	/*
-	* Insert()
-	*
-	* Inserts a new node populated with input data in the list.
-	*/
+	 * Insert()
+	 *
+	 * Inserts a new node populated with input data in the list.
+	 */
 	void Insert(int input)
 	{
 		std::shared_ptr<Node> newNode(new Node(input));
-		lastNode = newNode;
+		last = newNode;
 
 		if (listSize == 0) //insert into an empty list
 		{
-			firstNode = newNode;
+			first = newNode;
+			current = first;
 			listSize++;
 		}
 		else if (listSize == 1)
 		{
-			firstNode->next = newNode;
-			newNode->previous = firstNode;
+			first->next = newNode;
+			first->next->previous = first;
 			listSize++;
 		}
-		else
-		{
-			firstNode = Insert(newNode, firstNode->next);
-		}
+//		else
+//		{
+//			first = Insert(newNode, first->next);
+//		}
 	}
 
 	/*
-	* Remove
-	*
-	* Removes the node(s) where value matches node data.
-	*/
+	 * Remove
+	 *
+	 * Removes the node(s) where value matches node data.
+	 */
 	void Remove(int value)
 	{
-		if (!firstNode)
+		if (!first)
 		{
 			return;
 		}
-		else if (!firstNode->next)
+		else if (!first->next)
 		{
-			if (firstNode->data == value)
+			if (first->data == value)
 			{
-				firstNode.reset();
-				lastNode.reset();
+				first.reset();
+				last.reset();
 				listSize--;
 			}
 			else
@@ -101,46 +114,92 @@ public:
 		}
 		else
 		{
-			firstNode = Remove(value, firstNode->next);
+			first = Remove(value, first->next);
 		}
 	}
 
 	/*
-	*Empty
-	*
-	* Return true if the container size is 0, false otherwise.
-	*/
+	 *Empty
+	 *
+	 * Return true if the container size is 0, false otherwise.
+	 */
 	bool Empty()
 	{
 		return (listSize == 0);
 	}
 
 	/*
-	* Back
-	*
-	* Return value of data in the last node in the list.
-	*/
+	 * Return value of data in the last node in the list.
+	 */
 	int Back()
 	{
-		return lastNode->data;
+		return last->data;
 	}
 
 	/*
-	* Return value of data in the first node in the list.
-	*/
+	 * Return value of data in the first node in the list.
+	 */
 	int Front()
 	{
-		return firstNode->data;
+		return first->data;
 	}
 
-	
+
+	int GetCurrentVal()
+	{
+		return current->data;
+	}
+
+	void SetCurrentVal(int value)
+	{
+		current->data = value;
+	}
+
+	void CurrentToFront()
+	{
+		current = first;
+	}
+
+	void CurrentToBack()
+	{
+		current = last;
+	}
+
+	void ClearList()
+	{
+		current.reset();
+		first.reset();
+		last.reset();
+	}
+
+	bool operator ++()
+	{
+		if(current->next)
+		{
+			current = current->next;
+			return true;
+		}
+		return false;
+	}
+
+	bool operator --()
+	{
+		if(current->previous)
+		{
+			current = current->previous;
+			return true;
+
+		}
+		return false;
+	}
+
 private:
 
 	/*
-	* Insert()
-	*
-	* Recursive insert on the list.
-	*/
+	 * Insert()
+	 *
+	 * Recursive insert on the list.
+	 */
 	std::shared_ptr<Node> Insert(std::shared_ptr<Node> newNode, std::shared_ptr<Node> head)
 	{
 		if (!head->next)
@@ -157,18 +216,18 @@ private:
 	}
 
 	/*
-	* Remove
-	*
-	* Recursive helper function to remove a node in the list.
-	*/
+	 * Remove
+	 *
+	 * Recursive helper function to remove a node in the list.
+	 */
 	std::shared_ptr<Node> Remove(int value, std::shared_ptr<Node> head)
-	{
+			{
 		if (head->data == value) //remove head
 		{
 			head->previous->next = head->next;
-			if (head == lastNode)
+			if (head == last)
 			{
-				lastNode = head->previous;
+				last = head->previous;
 			}
 			else
 			{
@@ -183,13 +242,13 @@ private:
 			Remove(value, head->next);
 		}
 		return head->previous;
-	}
+			}
 };
 
 
 
 DoubleLinkedList::DoubleLinkedList()
-	: pImpl(new ListImpl())
+: pImpl(new ListImpl())
 {}
 
 DoubleLinkedList::~DoubleLinkedList()
@@ -225,5 +284,39 @@ int DoubleLinkedList::Front()
 	return pImpl->Front();
 }
 
+int DoubleLinkedList::GetCurrentVal()
+{
+	return pImpl->GetCurrentVal();
+}
+
+void DoubleLinkedList::SetCurrentVal(int value)
+{
+	pImpl->SetCurrentVal(value);
+}
+
+void DoubleLinkedList::CurrentToFront()
+{
+	pImpl->CurrentToFront();
+}
+
+void DoubleLinkedList::CurrentToBack()
+{
+	pImpl->CurrentToBack();
+}
+
+void DoubleLinkedList::ClearList()
+{
+	pImpl->ClearList();
+}
+
+bool DoubleLinkedList::operator ++()
+{
+	return ++*pImpl.get();
+}
+
+bool DoubleLinkedList::operator --()
+{
+	return --*pImpl.get();
+}
 
 

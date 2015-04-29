@@ -11,27 +11,37 @@
 #include "DoubleLinkedList.h"
 
 int main() {
-	
+
 	DoubleLinkedList d;
 
 	d.Insert(5);
 	d.Insert(4);
-	d.Insert(3);
-	d.Insert(7);
-	d.Insert(-1);
+//	d.Insert(3);
+//	d.Insert(7);
+//	d.Insert(-1);
 
-	for(DoubleLinkedList::iterator i = d.begin(); i != d.end(); i++)
-    {
-        std::cout << *i << " ";
-    }
+	//d.Remove(3);
+	//d.Remove(-1);
 
-	d.Remove(3);
-	d.Remove(-1);
+	int curr = d.GetCurrentVal();
+	std::cout << curr << std::endl;
+	while(++d)
+	{
+		std::cout << d.GetCurrentVal() << std::endl;
+	}
 
-	int x = d.Size();
+	std::cout << d.GetCurrentVal() << std::endl;
+	while(--d)
+	{
+		std::cout << d.GetCurrentVal() << std::endl;
+	}
 
-	int y = d.Back();
-	int z = d.Front();
+	d.CurrentToFront();
+	std::cout << curr << std::endl;
+	while(++d)
+	{
+		std::cout << d.GetCurrentVal() << std::endl;
+	}
 
 	return 0;
 }
