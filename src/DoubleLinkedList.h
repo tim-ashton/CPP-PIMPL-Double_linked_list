@@ -11,13 +11,13 @@
 #ifndef DOUBLELINKEDLIST_H_
 #define DOUBLELINKEDLIST_H_
 
-
 #include <memory>
 
 class DoubleLinkedList
 {
-	class ListImpl;						//Forward declaration
-	std::shared_ptr<ListImpl> pImpl;	//Pointer to the implementation.
+	class ListImpl;						//Forward declare
+	std::unique_ptr<ListImpl> pImpl;	//Pointer to the implementation.
+
 public:
 	DoubleLinkedList();
 	virtual ~DoubleLinkedList();
@@ -28,6 +28,7 @@ public:
 	bool Empty();
 	int Front();
 	int Back();
+	void PopFront();
+	void PopBack();
 };
-
 #endif /* DOUBLELINKEDLIST_H_ */
