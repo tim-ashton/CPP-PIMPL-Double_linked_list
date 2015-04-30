@@ -16,30 +16,37 @@ class DoubleLinkedList::ListImpl
 	struct Node
 	{
 		int data;
-		std::shared_ptr<Node> next;
-		std::shared_ptr<Node> previous;
+		Node *next;
+		Node *previous;
 
 		Node(int input)
-		:data(input)
-		, next(NULL)
-		, previous(NULL)
+		: data(input)
+		, next(nullptr)
+		, previous(nullptr)
 		{}
 	};
 
-	std::shared_ptr<Node> first;
-	std::shared_ptr<Node> last;
-	std::shared_ptr<Node> current;
 	int listSize;
+	Node *first;
+	Node *last;
+	Node *current;
+
 
 public:
 	ListImpl()
-	:listSize(0)
+	: listSize(0)
+	, first(nullptr)
+	, last(nullptr)
+	, current(nullptr)
 	{}
 
 	ListImpl(const ListImpl &rhs)
-	:listSize(0)
+	: listSize(0)
+	, first(nullptr)
+	, last(nullptr)
+	, current(nullptr)
 	{
-		std::shared_ptr<Node> temp = rhs.first;
+		Node* temp = rhs.first;
 		while(temp)
 		{
 			this->Insert(temp->data);
@@ -48,7 +55,9 @@ public:
 	}
 
 	~ListImpl()
-	{} // Let the shared_ptr handle delete.
+	{
+		ClearList();
+	}
 
 	/*
 	 * int Size()
@@ -67,7 +76,7 @@ public:
 	 */
 	void Insert(int input)
 	{
-		std::shared_ptr<Node> newNode(new Node(input));
+		Node *newNode = new Node(input);
 		last = newNode;
 
 		if (listSize == 0) //insert into an empty list
@@ -78,14 +87,14 @@ public:
 		}
 		else if (listSize == 1)
 		{
-			first->next = newNode;
-			first->next->previous = first;
+			first->next = last;
+			last->previous = first;
 			listSize++;
 		}
-//		else
-//		{
-//			first = Insert(newNode, first->next);
-//		}
+		else
+		{
+			first = Insert(newNode, first->next);
+		}
 	}
 
 	/*
@@ -95,16 +104,16 @@ public:
 	 */
 	void Remove(int value)
 	{
-		if (!first)
+		if (listSize == 0)
 		{
 			return;
 		}
-		else if (!first->next)
+		else if (listSize == 1)
 		{
 			if (first->data == value)
 			{
-				first.reset();
-				last.reset();
+				delete first;
+				first = last = nullptr;
 				listSize--;
 			}
 			else
@@ -167,23 +176,37 @@ public:
 
 	void ClearList()
 	{
-		current.reset();
-		first.reset();
-		last.reset();
+		current = nullptr;
+		last = nullptr;
+		while(first)
+		{
+			if(first->next)
+			{
+				first = first->next;
+				delete first->previous;
+				first->previous = nullptr;
+			}
+			else
+			{
+				delete first;
+				first = nullptr;
+			}
+
+		}
 	}
 
 	bool operator ++()
-	{
+																	{
 		if(current->next)
 		{
 			current = current->next;
 			return true;
 		}
 		return false;
-	}
+																	}
 
 	bool operator --()
-	{
+																	{
 		if(current->previous)
 		{
 			current = current->previous;
@@ -191,7 +214,7 @@ public:
 
 		}
 		return false;
-	}
+																	}
 
 private:
 
@@ -200,9 +223,9 @@ private:
 	 *
 	 * Recursive insert on the list.
 	 */
-	std::shared_ptr<Node> Insert(std::shared_ptr<Node> newNode, std::shared_ptr<Node> head)
+	Node *Insert(Node *newNode, Node *head)
 	{
-		if (!head->next)
+		if (!(head->next))
 		{
 			head->next = newNode;
 			newNode->previous = head;
@@ -220,29 +243,30 @@ private:
 	 *
 	 * Recursive helper function to remove a node in the list.
 	 */
-	std::shared_ptr<Node> Remove(int value, std::shared_ptr<Node> head)
-			{
-		if (head->data == value) //remove head
+	Node *Remove(int value, Node *toRemove)
+	{
+		if (toRemove->data == value) //remove head
 		{
-			head->previous->next = head->next;
-			if (head == last)
+			toRemove->previous->next = toRemove->next;
+			if (toRemove == last)
 			{
-				last = head->previous;
+				// have reached the end move "last" back one node.
+				last = toRemove->previous;
 			}
 			else
 			{
-				head->next->previous = head->previous;
+				// Somewhere else in the list
+				toRemove->next->previous = toRemove->previous;
 			}
 			listSize--;
-			// Let head go out of scope so shared_ptr
-			// can call the delete as necessary.
+			delete toRemove;
 		}
 		else
 		{
-			Remove(value, head->next);
+			Remove(value, toRemove->next);
 		}
-		return head->previous;
-			}
+		return toRemove->previous;
+	}
 };
 
 
@@ -318,5 +342,6 @@ bool DoubleLinkedList::operator --()
 {
 	return --*pImpl.get();
 }
+
 
 
