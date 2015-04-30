@@ -196,17 +196,17 @@ public:
 	}
 
 	bool operator ++()
-																	{
+	{
 		if(current->next)
 		{
 			current = current->next;
 			return true;
 		}
 		return false;
-																	}
+	}
 
 	bool operator --()
-																	{
+	{
 		if(current->previous)
 		{
 			current = current->previous;
@@ -214,7 +214,7 @@ public:
 
 		}
 		return false;
-																	}
+	}
 
 private:
 
