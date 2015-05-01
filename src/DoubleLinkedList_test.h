@@ -2,10 +2,40 @@
  * DoubleLinkedList_test.cpp
  *
  *  Created on: 21/04/2015
- *      Author: tim
+ *      Author: Tim Ashton
  */
 
+#ifndef DOUBLELINKEDLIST_TEST_H_
+#define DOUBLELINKEDLIST_TEST_H_
+
 #include "DoubleLinkedList.h"
+#include <assert.h>
+#define NDEBUG
+
+void TestDefaultConstructor()
+{
+	DoubleLinkedList dLink;
+    assert(dLink.Size() == 0);
+    assert(dLink.Empty());
+    assert(!++dLink);
+    assert(!--dLink);
+}
+
+void TestCopyConstructor()
+{
+	DoubleLinkedList d;
+
+	for(int i = 0; i < 501; i++)
+	{
+		if(i%10 == 0)
+		{
+			d.Insert(i);
+		}
+	}
+	int x = d.Back();
+	assert(d.Size() == 51);
+	assert(d.Back() == 500);
+}
 
 bool TestInsertOne()
 {
@@ -74,3 +104,5 @@ bool TestInsertTwo()
 
 	return true;
 }
+
+#endif // DOUBLELINKEDLIST_TEST_H_

@@ -9,8 +9,24 @@
 #include <iostream>
 
 #include "DoubleLinkedList.h"
+#include "DoubleLinkedList_test.h"
 
-int main() {
+int main()
+{
+	try
+	{
+		TestDefaultConstructor();
+		std::cout << "TestDefaultConstructor passed." << std::endl;
+
+		TestCopyConstructor();
+		std::cout << "TestCopyConstructor passed." << std::endl;
+	}
+	catch(const std::exception& ex)
+	{
+		ex.what();
+		std::cout << "testing failed!!" << ex.what() << std::endl;
+	}
+
 
 	DoubleLinkedList d;
 

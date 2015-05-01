@@ -12,7 +12,6 @@
 
 class DoubleLinkedList::ListImpl
 {
-
 	struct Node
 	{
 		int data;
@@ -31,7 +30,6 @@ class DoubleLinkedList::ListImpl
 	Node *last;
 	Node *current;
 
-
 public:
 	ListImpl()
 	: listSize(0)
@@ -40,13 +38,13 @@ public:
 	, current(nullptr)
 	{}
 
-	ListImpl(const ListImpl &rhs)
+	ListImpl(const ListImpl *rhs)
 	: listSize(0)
 	, first(nullptr)
 	, last(nullptr)
 	, current(nullptr)
 	{
-		Node* temp = rhs.first;
+		Node* temp = rhs->first;
 		while(temp)
 		{
 			this->Insert(temp->data);
@@ -54,26 +52,10 @@ public:
 		}
 	}
 
-	~ListImpl()
-	{
-		ClearList();
-	}
+	~ListImpl() { ClearList(); }
 
-	/*
-	 * int Size()
-	 *
-	 * Return the number of nodes in the list.
-	 */
-	int Size()
-	{
-		return listSize;
-	}
+	int Size() { return listSize; }
 
-	/*
-	 * Insert()
-	 *
-	 * Inserts a new node populated with input data in the list.
-	 */
 	void Insert(int input)
 	{
 		Node *newNode = new Node(input);
@@ -97,11 +79,6 @@ public:
 		}
 	}
 
-	/*
-	 * Remove
-	 *
-	 * Removes the node(s) where value matches node data.
-	 */
 	void Remove(int value)
 	{
 		if (listSize == 0)
@@ -127,52 +104,19 @@ public:
 		}
 	}
 
-	/*
-	 *Empty
-	 *
-	 * Return true if the container size is 0, false otherwise.
-	 */
-	bool Empty()
-	{
-		return (listSize == 0);
-	}
+	bool Empty() { return (listSize == 0); }
 
-	/*
-	 * Return value of data in the last node in the list.
-	 */
-	int Back()
-	{
-		return last->data;
-	}
+	int Back() { return last->data; }
 
-	/*
-	 * Return value of data in the first node in the list.
-	 */
-	int Front()
-	{
-		return first->data;
-	}
+	int Front()	{ return first->data; }
 
+	int GetCurrentVal() { return current->data; }
 
-	int GetCurrentVal()
-	{
-		return current->data;
-	}
+	void SetCurrentVal(int value) { current->data = value; }
 
-	void SetCurrentVal(int value)
-	{
-		current->data = value;
-	}
+	void CurrentToFront() { current = first; }
 
-	void CurrentToFront()
-	{
-		current = first;
-	}
-
-	void CurrentToBack()
-	{
-		current = last;
-	}
+	void CurrentToBack() { current = last; }
 
 	void ClearList()
 	{
@@ -191,13 +135,16 @@ public:
 				delete first;
 				first = nullptr;
 			}
-
 		}
 	}
 
 	bool operator ++()
 	{
-		if(current->next)
+		if(!current)
+		{
+			return false;
+		}
+		else if(current->next)
 		{
 			current = current->next;
 			return true;
@@ -207,7 +154,11 @@ public:
 
 	bool operator --()
 	{
-		if(current->previous)
+		if(!current)
+		{
+			return false;
+		}
+		else if(current->previous)
 		{
 			current = current->previous;
 			return true;
@@ -218,8 +169,7 @@ public:
 
 private:
 
-	/*
-	 * Insert()
+	/* Insert()
 	 *
 	 * Recursive insert on the list.
 	 */
@@ -238,8 +188,7 @@ private:
 		return head->previous;
 	}
 
-	/*
-	 * Remove
+	/* Remove ()
 	 *
 	 * Recursive helper function to remove a node in the list.
 	 */
@@ -269,79 +218,42 @@ private:
 	}
 };
 
-
-
 DoubleLinkedList::DoubleLinkedList()
 : pImpl(new ListImpl())
 {}
 
-DoubleLinkedList::~DoubleLinkedList()
-{} // Do nothing. Let the unique_ptr handle deallocation.
+DoubleLinkedList::DoubleLinkedList(const DoubleLinkedList &rhs)
+: pImpl(new ListImpl(rhs.pImpl.get()))
+{}
 
-int DoubleLinkedList::Size()
-{
-	return pImpl->Size();
-}
+// Do nothing. Let the unique_ptr handle deallocation.
+DoubleLinkedList::~DoubleLinkedList() {}
 
-void DoubleLinkedList::Insert(int input)
-{
-	pImpl->Insert(input);
-}
+int DoubleLinkedList::Size() { return pImpl->Size(); }
 
-void DoubleLinkedList::Remove(int value)
-{
-	pImpl->Remove(value);
-}
+void DoubleLinkedList::Insert(int input) { pImpl->Insert(input); }
 
-bool DoubleLinkedList::Empty()
-{
-	return pImpl->Empty();
-}
+void DoubleLinkedList::Remove(int value) { pImpl->Remove(value); }
 
-int DoubleLinkedList::Back()
-{
-	return pImpl->Back();
-}
+bool DoubleLinkedList::Empty() { return pImpl->Empty(); }
 
-int DoubleLinkedList::Front()
-{
-	return pImpl->Front();
-}
+int DoubleLinkedList::Back() { return pImpl->Back(); }
 
-int DoubleLinkedList::GetCurrentVal()
-{
-	return pImpl->GetCurrentVal();
-}
+int DoubleLinkedList::Front() {	return pImpl->Front(); }
 
-void DoubleLinkedList::SetCurrentVal(int value)
-{
-	pImpl->SetCurrentVal(value);
-}
+int DoubleLinkedList::GetCurrentVal() {	return pImpl->GetCurrentVal(); }
 
-void DoubleLinkedList::CurrentToFront()
-{
-	pImpl->CurrentToFront();
-}
+void DoubleLinkedList::SetCurrentVal(int value) { pImpl->SetCurrentVal(value); }
 
-void DoubleLinkedList::CurrentToBack()
-{
-	pImpl->CurrentToBack();
-}
+void DoubleLinkedList::CurrentToFront() { pImpl->CurrentToFront(); }
 
-void DoubleLinkedList::ClearList()
-{
-	pImpl->ClearList();
-}
+void DoubleLinkedList::CurrentToBack() { pImpl->CurrentToBack(); }
 
-bool DoubleLinkedList::operator ++()
-{
-	return ++*pImpl.get();
-}
+void DoubleLinkedList::ClearList() { pImpl->ClearList(); }
 
-bool DoubleLinkedList::operator --()
-{
-	return --*pImpl.get();
-}
+bool DoubleLinkedList::operator ++() { return ++*pImpl.get(); }
+
+bool DoubleLinkedList::operator --() { return --*pImpl.get(); }
 
 
 
