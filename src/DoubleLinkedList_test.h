@@ -32,77 +32,59 @@ void TestCopyConstructor()
 			d.Insert(i);
 		}
 	}
-	int x = d.Back();
 	assert(d.Size() == 51);
 	assert(d.Back() == 500);
+
+	DoubleLinkedList d2(d);
+
+	assert(d.Size() == d2.Size());
+	assert(d.Back() == d2.Back());
+	assert(d.Front() == d2.Front());
+	assert(&d != &d2);
+
+	int dCurr = d.GetCurrentVal();
+	int d2Curr = d2.GetCurrentVal();
+	assert(dCurr == d2Curr);
+
+//	while(++d && ++d2)
+//	{
+//		assert()
+//	}
 }
 
-bool TestInsertOne()
+bool TestInsert()
 {
-	DoubleLinkedList dLink;
+	DoubleLinkedList d;
 
 	// insert 1 element
-	dLink.Insert(5);
-	if(dLink.Size() != 1)
-	{
-		return false;
-	}
-	else if (dLink.Front() != dLink.Back())
-	{
-		return false;
-	}
-	else if (dLink.Front() != 5)
-	{
-		return false;
-	}
+	d.Insert(5);
+
+	assert(d.Size() == 1);
+	assert(d.Back() == d.Front());
+	assert(d.Front() == 5);
 
 	// insert another element
-	dLink.Insert(56);
-	if(dLink.Size() != 2)
-	{
-		return false;
-	}
-	else if (dLink.Front() == dLink.Back())
-	{
-		return false;
-	}
-	else if (dLink.Front() != 5)
-	{
-		return false;
-	}
-	else if (dLink.Front() != 5)
-	{
-		return false;
-	}
+//	dLink.Insert(56);
+//	if(dLink.Size() != 2)
+//	{
+//		return false;
+//	}
+//	else if (dLink.Front() == dLink.Back())
+//	{
+//		return false;
+//	}
+//	else if (dLink.Front() != 5)
+//	{
+//		return false;
+//	}
+//	else if (dLink.Front() != 5)
+//	{
+//		return false;
+//	}
 
 	return true;
 }
 
-bool TestInsertTwo()
-{
-	DoubleLinkedList dLink;
 
-	// insert 2 elements
-	dLink.Insert(5);
-	dLink.Insert(56);
-	if(dLink.Size() != 2)
-	{
-		return false;
-	}
-	else if (dLink.Front() == dLink.Back())
-	{
-		return false;
-	}
-	else if (dLink.Front() != 5)
-	{
-		return false;
-	}
-	else if (dLink.Back() != 56)
-	{
-		return false;
-	}
-
-	return true;
-}
 
 #endif // DOUBLELINKEDLIST_TEST_H_

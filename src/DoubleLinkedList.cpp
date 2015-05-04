@@ -100,7 +100,7 @@ public:
 		}
 		else
 		{
-			first = Remove(value, first->next);
+			Remove(value, first->next);
 		}
 	}
 
@@ -192,9 +192,9 @@ private:
 	 *
 	 * Recursive helper function to remove a node in the list.
 	 */
-	Node *Remove(int value, Node *toRemove)
+	void Remove(int value, Node *toRemove)
 	{
-		if (toRemove->data == value) //remove head
+		if (toRemove->data == value) //remove toRemove
 		{
 			toRemove->previous->next = toRemove->next;
 			if (toRemove == last)
@@ -214,7 +214,6 @@ private:
 		{
 			Remove(value, toRemove->next);
 		}
-		return toRemove->previous;
 	}
 };
 

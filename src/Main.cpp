@@ -20,11 +20,14 @@ int main()
 
 		TestCopyConstructor();
 		std::cout << "TestCopyConstructor passed." << std::endl;
+
+		TestInsert();
+		std::cout << "TestInsert passed." << std::endl;
 	}
-	catch(const std::exception& ex)
+	catch(...)
 	{
-		ex.what();
-		std::cout << "testing failed!!" << ex.what() << std::endl;
+		std::cout << "testing failed!! An exception was thrown"
+				" in main."<< std::endl;
 	}
 
 
