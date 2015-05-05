@@ -23,6 +23,10 @@ int main()
 
 		TestInsert();
 		std::cout << "TestInsert passed." << std::endl;
+
+		TestSize();
+		std::cout << "TestSize passed." << std::endl;
+
 	}
 	catch(...)
 	{

@@ -42,17 +42,46 @@ void TestCopyConstructor()
 	assert(d.Front() == d2.Front());
 	assert(&d != &d2);
 
-	int dCurr = d.GetCurrentVal();
-	int d2Curr = d2.GetCurrentVal();
-	assert(dCurr == d2Curr);
+	assert(d.GetCurrentVal() == d2.GetCurrentVal());
 
-//	while(++d && ++d2)
-//	{
-//		assert()
-//	}
+	while(++d && ++d2)
+	{
+		assert(d.GetCurrentVal() == d2.GetCurrentVal());
+	}
+
+	assert(d.Back() == d2.GetCurrentVal());
 }
 
-bool TestInsert()
+void TestSize()
+{
+	DoubleLinkedList d;
+
+	for(int i = 0; i < 10; i++)
+	{
+		d.Insert(i);
+		assert(d.Size() == (i+1));
+	}
+
+	for(int i = 10; i < 20; i++)
+	{
+		d.Insert(i);
+		assert(d.Size() == (i+1));
+	}
+
+	for(int i = 19; i > 9; i--)
+	{
+		d.Remove(i);
+		assert(d.Size() == (i));
+	}
+
+	for(int i = 9; i >= 0; i--)
+	{
+		d.Remove(i);
+		assert(d.Size() == (i));
+	}
+}
+
+void TestInsert()
 {
 	DoubleLinkedList d;
 
@@ -64,27 +93,37 @@ bool TestInsert()
 	assert(d.Front() == 5);
 
 	// insert another element
-//	dLink.Insert(56);
-//	if(dLink.Size() != 2)
-//	{
-//		return false;
-//	}
-//	else if (dLink.Front() == dLink.Back())
-//	{
-//		return false;
-//	}
-//	else if (dLink.Front() != 5)
-//	{
-//		return false;
-//	}
-//	else if (dLink.Front() != 5)
-//	{
-//		return false;
-//	}
+	d.Insert(56);
+	assert(d.Size() == 2);
+	assert(d.Front() != d.Back());
+	assert(d.Front() == 5);
 
-	return true;
+	for(int i = 0; i < 100; i++)
+	{
+		d.Insert(i);
+	}
+
+	assert(d.Size() == 102);
+	assert(d.Front() != d.Back());
+	assert(d.Front() == 5);
+	assert(d.Back() == 99);
+
+	int count = 0;
+	while(++d && ++ count);
+	assert(count == 101); // 0 indexed
+
+	assert(d.GetCurrentVal() == 99);
+}
+
+void TestRemove()
+{
+	//TODO
 }
 
 
+void TestEmpty()
+{
+	//TODO
+}
 
 #endif // DOUBLELINKEDLIST_TEST_H_
