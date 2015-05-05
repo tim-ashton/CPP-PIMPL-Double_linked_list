@@ -9,6 +9,7 @@
 
 
 #include "DoubleLinkedList.h"
+#include <limits.h>
 
 class DoubleLinkedList::ListImpl
 {
@@ -100,15 +101,43 @@ public:
 		}
 		else
 		{
+			// Check if it is the first item in the list
+			if (first->data == value)
+			{
+				Node *temp = first;
+				first = first->next;
+				first->previous = nullptr;
+				delete temp;
+				listSize--;
+			}
+			else
+			{
+				return;
+			}
+
 			Remove(value, first->next);
 		}
 	}
 
 	bool Empty() { return (listSize == 0); }
 
-	int Back() { return last->data; }
+	int Back()
+	{
+		if(last)
+		{
+			return last->data;
+		}
+		return INT_MIN;
+	}
 
-	int Front()	{ return first->data; }
+	int Front()
+	{
+		if(first)
+		{
+			return first->data;
+		}
+		return INT_MIN;
+	}
 
 	int GetCurrentVal() { return current->data; }
 
@@ -122,6 +151,7 @@ public:
 	{
 		current = nullptr;
 		last = nullptr;
+		listSize = 0;
 		while(first)
 		{
 			if(first->next)

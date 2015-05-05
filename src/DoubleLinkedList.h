@@ -13,6 +13,7 @@
 
 #include <memory>
 
+
 class DoubleLinkedList
 {
 	class ListImpl;						//Forward declare
