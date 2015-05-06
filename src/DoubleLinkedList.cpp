@@ -80,23 +80,24 @@ public:
 		}
 	}
 
-	void Remove(int value)
+	bool Remove(int value)
 	{
 		if (listSize == 0)
 		{
-			return;
+			return false;
 		}
 		else if (listSize == 1)
 		{
 			if (first->data == value)
 			{
 				delete first;
-				first = last = nullptr;
+				first = last = current = nullptr;
 				listSize--;
+				return true;
 			}
 			else
 			{
-				return;
+				return false;
 			}
 		}
 		else
@@ -107,15 +108,20 @@ public:
 				Node *temp = first;
 				first = first->next;
 				first->previous = nullptr;
+
+				if(current == temp) // current was pointing at temp so move it too
+				{
+					current = first;
+				}
+
 				delete temp;
 				listSize--;
+				return true;
 			}
 			else
 			{
-				return;
+				return Remove(value, first->next);
 			}
-
-			Remove(value, first->next);
 		}
 	}
 
@@ -139,13 +145,29 @@ public:
 		return INT_MIN;
 	}
 
-	int GetCurrentVal() { return current->data; }
+	int GetCursorVal()
+	{
+		if(current)
+		{
+			return current->data;
+		}
+		return INT_MIN;
+	}
 
-	void SetCurrentVal(int value) { current->data = value; }
 
-	void CurrentToFront() { current = first; }
+	bool SetCursorVal(int value)
+	{
+		if(current)
+		{
+			current->data = value;
+			return true;
+		}
+		return false;
+	}
 
-	void CurrentToBack() { current = last; }
+	void CursorToFront() { current = first; }
+
+	void CursorToBack() { current = last; }
 
 	void ClearList()
 	{
@@ -169,7 +191,7 @@ public:
 	}
 
 	bool operator ++()
-	{
+			{
 		if(!current)
 		{
 			return false;
@@ -180,10 +202,10 @@ public:
 			return true;
 		}
 		return false;
-	}
+			}
 
 	bool operator --()
-	{
+			{
 		if(!current)
 		{
 			return false;
@@ -195,7 +217,7 @@ public:
 
 		}
 		return false;
-	}
+			}
 
 private:
 
@@ -222,7 +244,7 @@ private:
 	 *
 	 * Recursive helper function to remove a node in the list.
 	 */
-	void Remove(int value, Node *toRemove)
+	bool Remove(int value, Node *toRemove)
 	{
 		if (toRemove->data == value) //remove toRemove
 		{
@@ -239,10 +261,12 @@ private:
 			}
 			listSize--;
 			delete toRemove;
+			toRemove = nullptr;
+			return true;
 		}
 		else
 		{
-			Remove(value, toRemove->next);
+			return Remove(value, toRemove->next);
 		}
 	}
 };
@@ -262,7 +286,7 @@ int DoubleLinkedList::Size() { return pImpl->Size(); }
 
 void DoubleLinkedList::Insert(int input) { pImpl->Insert(input); }
 
-void DoubleLinkedList::Remove(int value) { pImpl->Remove(value); }
+bool DoubleLinkedList::Remove(int value) { return pImpl->Remove(value); }
 
 bool DoubleLinkedList::Empty() { return pImpl->Empty(); }
 
@@ -270,13 +294,13 @@ int DoubleLinkedList::Back() { return pImpl->Back(); }
 
 int DoubleLinkedList::Front() {	return pImpl->Front(); }
 
-int DoubleLinkedList::GetCurrentVal() {	return pImpl->GetCurrentVal(); }
+int DoubleLinkedList::GetCursorVal() {	return pImpl->GetCursorVal(); }
 
-void DoubleLinkedList::SetCurrentVal(int value) { pImpl->SetCurrentVal(value); }
+bool DoubleLinkedList::SetCursorVal(int value) { return pImpl->SetCursorVal(value); }
 
-void DoubleLinkedList::CurrentToFront() { pImpl->CurrentToFront(); }
+void DoubleLinkedList::CursorToFront() { pImpl->CursorToFront(); }
 
-void DoubleLinkedList::CurrentToBack() { pImpl->CurrentToBack(); }
+void DoubleLinkedList::CursorToBack() { pImpl->CursorToBack(); }
 
 void DoubleLinkedList::ClearList() { pImpl->ClearList(); }
 

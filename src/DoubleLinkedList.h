@@ -40,7 +40,7 @@ public:
 	 *
 	 * Removes the node(s) where value matches node data.
 	 */
-	void Remove(int value);
+	bool Remove(int value);
 
 	/* Empty()
 	 *
@@ -60,30 +60,30 @@ public:
 	 */
 	int Back();
 
-	/* GetCurrentVal()
+	/* GetCursorVal()
 	 *
 	 * Gets the value of where the current cursor points.
 	 */
-	int GetCurrentVal();
+	int GetCursorVal();
 
-	/* SetCurrentVal()
+	/* SetCursorVal()
 	 *
 	 * Sets the value of where the current cursor points to
 	 * parameter value.
 	 */
-	void SetCurrentVal(int value);
+	bool SetCursorVal(int value);
 
-	/* CurrentToFront()
+	/* CursorToFront()
 	 *
 	 * Points the current cursor to the front of the list (Node *first).
 	 */
-	void CurrentToFront();
+	void CursorToFront();
 
-	/*CurrentToBack()
+	/*CursorToBack()
 	 *
 	 * Points the current cursor to the back of the list (Node *last).
 	 */
-	void CurrentToBack();
+	void CursorToBack();
 
 	/* ClearList()
 	 *
